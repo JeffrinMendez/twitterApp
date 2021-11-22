@@ -1,37 +1,49 @@
-import { Button, Text, View, StyleSheet } from "react-native";
-import React from 'react';
+import React, { useEffect, useState } from "react";
+import { Button, StyleSheet, Text, View } from "react-native";
+import FeedScreen from './FeedScreen';
 
 
+const HomeScreen = ({ navigation }) => {
 
-const tweetData = [
-    { "id": 1, "user_id": 1, "tweet_text": "Hello World", "tweet_date": "2021-11-16T02:22:12.216915" },
-     { "id": 2, "user_id": 1, "tweet_text": "Soy Hacker", "tweet_date": "2021-11-16T02:22:19.444136" },
-      { "id": 3, "user_id": 1, "tweet_text": "Mamá estoy programando", "tweet_date": "2021-11-16T02:22:31.572241" },
+  const [tweetsData, setTweetsData] = useState([])
+
   
+  const getTweets = async  () => {
+
+      const resp = await fetch('https://jsonplaceholder.typicode.com/users')
+      
+      const data = await resp.json()
+
+      setTweetsData(data)
+
+  }
 
 
+  useEffect(() => {
+      getTweets()
+  }, [])
 
 
+  return (
+      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
 
-]
+          
+          <Text style={{ fontSize: 30 }}>Home Screen</Text>
+          {
+              tweetsData.map(tweet => (
+                  <Text key={tweet.id}>{tweet.text}</Text>
+              ))
 
-
-
-const HomeScreen = ({ route, navigation }) => {
-    return (
-        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-            <Text style = {{fontSize:40}}>Home Screen</Text>
-           {
-
-            tweetData.map( tweet => (
-                <Text key= { tweet.id }> {tweet.tweet_text}</Text>
-            ))
-
-           }
-            
-        </View>
-    );
+          }
+          <Button
+                title="Go to FeedScreen"
+                onPress={() => navigation.navigate('FeedScreen', {
+                    itemId: TweetsData.
+                    otherParam: 'anything you want here',
+                  })}
+            />
+      </View>
+  );
 }
 
-
-export default HomeScreen
+export default HomeScreen;
